@@ -11,7 +11,7 @@ require('dotenv').config({ path: './.env' });
 // checkEnv();
 app.use(express.json());
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')('sk_test_51I9l62KmO0rwRXgQbsBYb1Z0Ssb2MC0JhEAiFVUBiERqbhiRWNx5gnPlxyC2vejugiwlsUEyPcX9AlhI9Eh4Lv8o00Ykc8WAcx');
 
 const YOUR_DOMAIN = 'http://sprout.ae';
 
