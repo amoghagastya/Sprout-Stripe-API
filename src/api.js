@@ -31,7 +31,7 @@ try {
         {
           // TODO: replace this with the `price` of the product you want to sell
           amount : total,
-          currency : "inr",
+          currency : "aed",
           name : "" + name + "'s Sprout Order",
           quantity : 1,
           description : "Payment for cart items" + user_cart
