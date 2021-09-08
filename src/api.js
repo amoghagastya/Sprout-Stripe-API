@@ -6,6 +6,7 @@ const router = express.Router();
 const serverless = require('serverless-http');
 const { resolve } = require('path');
 const dotenv = require('dotenv');
+const axios = require('axios');
 
 dotenv.config({ path: './.env' });
 
@@ -24,7 +25,8 @@ try {
     const name = req.body.name;
     const email = req.body.email;
     const user_cart = req.body.cart;
-    // const woo_id = req.body.id;
+    const woo_id = req.body.id;
+    const wooURL = "https://sprout.ae/wp-json/wc/v3/orders/" + woo_id
     var session = await stripe.checkout.sessions.create({
       line_items: [
         {
@@ -40,14 +42,31 @@ try {
         'card',
       ],
       mode: 'payment',
-      success_url: `https://localhost:9000`,
-      cancel_url: `https://sprout.ae`,
+      success_url: `https://sprout.ae/my-account/`,
+      cancel_url: `https://sprout.ae/our-menu`,
       customer_email: email
     });
   
     // session["woo_id"] = woo_id;
     // res.redirect(303, session.url)
     console.log(session)
+    if (session.id != null) {
+      try {
+        const resp = await axios.post(wooURL, {"status" : "processing"} , 
+            {
+            auth: {
+                username : "ck_f12369252c429930b4252c36e68f307ce78b02dc",
+                password : "cs_503450fd2bbb0a787c77b6e9aed474adb303e863"
+            }
+        }
+        );
+        console.log('Request result ', resp.data);
+      }
+      catch(error) {
+        console.log(error)
+      }
+    }
+    
     return res.status(200).send(session)
   });
   
